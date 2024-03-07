@@ -5,6 +5,7 @@ import styles from "./links.module.css";
 import Navlink from "./navlink/Navlink";
 import { useState } from "react";
 import Image from "next/image";
+import { handleLogout } from "@/lib/actions";
 
 const links = [
   {
@@ -23,14 +24,18 @@ const links = [
     title: "Blog",
     path: "/blog",
   },
+  // {
+  //   title: "Admin",
+  //   path: "/admin",
+  // },
 ];
-const Links = () => {
-
+const Links = ({session}:any) => {
+console.log(session, 'session')
   const [open, setOpen] = useState(false)
 
   // TEMPORARY
-  const session = true;
-  const isAdmin = true;
+  // const session = true;
+  // const isAdmin = true;
 
   const handleOpen = () => {
     setOpen(!open)
@@ -42,10 +47,10 @@ const Links = () => {
         {links.map((link: { title: string, path: string }) => (
           <Navlink item={link} key={link.path} />
         ))}
-         {session ? (
+         {session?.user ? (
           <>
-            {isAdmin && <Navlink item={{ title: "Admin", path: "/admin" }} />}
-            <form>
+            {session?.user?.isAdmin && <Navlink item={{ title: "Admin", path: "/admin" }} />}
+            <form action={handleLogout}>
               <button className={styles.logout}>Logout</button>
             </form>
           </>
