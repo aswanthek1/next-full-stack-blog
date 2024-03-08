@@ -1,10 +1,13 @@
 import PostCard from '@/components/PostCard/PostCard'
 import styles from './blog.module.css'
 import { getPosts } from '@/lib/data'
+import { config } from '@/config/config'
+
+const {API_BASE_URL} = config
 
 const fetchData = async () => {
     try {
-        const data = await fetch("http://localhost:3000/api/blog", { next: { revalidate: 3600 } })
+        const data = await fetch(`${API_BASE_URL}blog`, { next: { revalidate: 3600 } })
         if (!data.ok) {
             throw new Error("Some thing went wrong!")
         }
@@ -28,7 +31,7 @@ const BlogPage = async () => {
             {
                 posts?.map((post: any) =>
                 (
-                    <div key={post.id} className={styles.post}>
+                    <div key={post._id} className={styles.post}>
                         <PostCard post={post} />
                     </div>
                 )

@@ -15,7 +15,6 @@ const PostUser = async ({ userId }: any) => {
     // const user = await fetchData(userId)
     console.log(userId, 'at post user')
     const user = await getUser(userId)
-    console.log(user, 'at post usereeeeee')
     return (
         <div className={styles.container}>
             <Image

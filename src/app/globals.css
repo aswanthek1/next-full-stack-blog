@@ -32,6 +32,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+  }
+
+  .childrenContainer {
+    padding-block: 50px;
   }
   
   @media (max-width: 1536px) {

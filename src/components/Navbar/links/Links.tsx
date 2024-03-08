@@ -1,11 +1,11 @@
 "use client"
 
-import Link from "next/link";
 import styles from "./links.module.css";
 import Navlink from "./navlink/Navlink";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { handleLogout } from "@/lib/actions";
+import { usePathname } from "next/navigation";
 
 const links = [
   {
@@ -29,10 +29,10 @@ const links = [
   //   path: "/admin",
   // },
 ];
-const Links = ({session}:any) => {
-console.log(session, 'session')
+const Links = ({ session }: any) => {
+  console.log(session, 'session')
   const [open, setOpen] = useState(false)
-
+  const location = usePathname()
   // TEMPORARY
   // const session = true;
   // const isAdmin = true;
@@ -41,13 +41,29 @@ console.log(session, 'session')
     setOpen(!open)
   }
 
+  useEffect(() => {
+    setOpen(false)
+  },[location])
+
+  // useEffect(() => {
+  //   const navLinks = document.getElementById('navlinks')
+  //     if(navLinks?.style.height > '400') {
+  //       navLinks?.classList?.add(styles.closed)
+  //       navLinks?.classList?.remove(styles.open)
+  //     }
+  //     else {
+  //       navLinks?.classList?.add(styles.open)
+  //       navLinks?.classList?.remove(styles.closed)
+  //     }
+  // },[open])
+
   return (
     <div className={styles.container}>
       <div className={styles.links}>
         {links.map((link: { title: string, path: string }) => (
           <Navlink item={link} key={link.path} />
         ))}
-         {session?.user ? (
+        {session?.user ? (
           <>
             {session?.user?.isAdmin && <Navlink item={{ title: "Admin", path: "/admin" }} />}
             <form action={handleLogout}>
@@ -59,7 +75,7 @@ console.log(session, 'session')
         )}
       </div>
       {/* <button className={styles.menuButton} onClick={handleOpen}>Menu</button> */}
-      <Image 
+      <Image
         className={styles.menuButton}
         onClick={handleOpen}
         src="/menu.png"
@@ -68,12 +84,22 @@ console.log(session, 'session')
         height={30}
       />
       {
-        open && <div className={styles.mobileLinks} >
+        open && <div id="navlinks" className={`${styles.mobileLinks} ${styles.open}`} >
           {
             links.map((link) => (
               <Navlink item={link} key={link.path} />
             ))
           }
+          {session?.user ? (
+            <>
+              {session?.user?.isAdmin && <Navlink item={{ title: "Admin", path: "/admin" }} />}
+              <form action={handleLogout}>
+                <button className={styles.logout}>Logout</button>
+              </form>
+            </>
+          ) : (
+            <Navlink item={{ title: "Login", path: "/login" }} />
+          )}
         </div>
       }
     </div>

@@ -1,49 +1,80 @@
 .links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .logout {
-    padding: 10px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .menuButton,
-  .mobileLinks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout {
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.menuButton,
+.mobileLinks {
+  display: none;
+}
+
+/* .mobileLinks {
+    height: 0px;
+    transition: height 2s;
+  } */
+
+@media (max-width: 768px) {
+  .links {
     display: none;
   }
-  
-  @media (max-width: 768px) {
-    .links {
-      display: none;
+
+  .menuButton {
+    display: block;
+    cursor: pointer;
+  }
+
+  .mobileLinks {
+    position: absolute;
+    top: 100px;
+    right: 0;
+    width: 50%;
+    height: calc(100vh - 100px);
+    background-color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    z-index: 1;
+    box-shadow: 0px 5px 7px -4px;
+  }
+
+  .open {
+    animation-name: navanimation;
+    animation-duration: 1s;
+  }
+
+  @keyframes navanimation {
+    from {
+      height: 0vh;
     }
-  
-    .menuButton {
-      display: block;
-      cursor: pointer;
-    }
-  
-    .mobileLinks {
-      position: absolute;
-      top: 100px;
-      right: 0;
-      width: 50%;
+
+    to {
       height: calc(100vh - 100px);
-      background-color: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      z-index: 1;
     }
   }
 
-  @media screen and (max-width:540px) {
-    .mobileLinks {
-      width: 100%;
-      right: 0;
-    }
+  /* .closed {
+      animation-name: navanimationclosed;
+      animation-duration: 1s;
+   }
+
+   @keyframes navanimationclosed {
+     from {height:calc(100vh - 100px);}
+     to {height:0vh;}
+   } */
+}
+
+@media screen and (max-width:540px) {
+  .mobileLinks {
+    width: 100%;
+    right: 0;
   }
+}

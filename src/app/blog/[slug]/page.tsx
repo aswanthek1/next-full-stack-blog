@@ -3,11 +3,13 @@ import styles from "./singlePost.module.css";
 import PostUser from "@/components/PostUser/PostUser";
 import { Suspense } from "react";
 import { getPost } from "@/lib/data";
+import { config } from '@/config/config'
 
+const {API_BASE_URL} = config
 
 const fetchData = async (slug: number | string) => {
   try {
-    const data = await fetch(`http://localhost:3000/api/blog/${slug}`)
+    const data = await fetch(`${API_BASE_URL}blog/${slug}`)
     if (!data.ok) {
       throw new Error("Some thing went wrong!")
     }
@@ -35,7 +37,7 @@ const SinglePostPage = async ({ params, searchParams }: any) => {
 
   // fetch post from api
   const blog = await fetchData(slug)
-
+console.log(blog, 'blog is in page')
   // get post without api
   // const blog = await getPost(slug)
 

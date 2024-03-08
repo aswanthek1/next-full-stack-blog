@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs'
 
 
 // blog actions
-export const addPost = async (previouseState, formData: any) => {
+export const addPost = async (previouseState, formData: FormData) => {
     try {
         const { title, slug, desc, userId, img } = Object.fromEntries(formData)
         connectToDb()
@@ -17,22 +17,26 @@ export const addPost = async (previouseState, formData: any) => {
         await newPost.save()
         revalidatePath('/blog')// to remove cache
         revalidatePath('/admin')
+        return {
+            ...previouseState,
+            error: null,
+            resetKey: Date.now().toString(), // Generate a new resetKey to trigger form reset
+          };
     } catch (error: any) {
         console.log(error)
-        throw new Error('Error at add post', error)
+        return {error: 'Something went wrong!'}
     }
 }
 
-export const deletePost = async (formData: any) => {
+export const deletePost = async (id:string) => {
     try {
-        const { id } = Object.fromEntries(formData)
         connectToDb()
         await Post.findByIdAndDelete(id)
         revalidatePath('/blog')
         revalidatePath('/admin')
     } catch (error: any) {
         console.log(error)
-        throw new Error('Error at delete post', error)
+        return {error: 'Something went wrong!'}
     }
 }
 
@@ -48,7 +52,7 @@ export const addUser = async (previouseState, formData: any) => {
         revalidatePath('/admin')// to remove cache
     } catch (error: any) {
         console.log(error)
-        throw new Error('Error at add user', error)
+        return {error: 'Something went wrong!'}
     }
 }
 
@@ -62,7 +66,7 @@ export const deleteUser = async (formData: any) => {
         revalidatePath('/admin')
     } catch (error: any) {
         console.log(error)
-        throw new Error('Error at delete user', error)
+        return {error: 'Something went wrong!'}
     }
 }
 

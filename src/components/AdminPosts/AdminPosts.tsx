@@ -2,15 +2,14 @@ import { getPosts } from "@/lib/data";
 import styles from "./adminPosts.module.css";
 import Image from "next/image";
 import { deletePost } from "@/lib/actions";
+import TableButton from "../TableButton/TableButton";
 
 const AdminPosts = async () => {
   const posts = await getPosts();
-
-  // const deletePostWithId = (id:string) => {
-  //   "user server"
-  //   return deletePost.bind(this, id)
-  // }
-
+  const handleButtonClicked = async(id:string) => {
+    "use server"
+    await deletePost(id)
+  }
   return (
     <div className={styles.container}>
       <h1>Posts</h1>
@@ -25,9 +24,7 @@ const AdminPosts = async () => {
             />
             <span className={styles.postTitle}>{post.title}</span>
           </div>
-          <form >
-            <button className={styles.postButton}>Delete</button>
-          </form>
+          <TableButton id={post.id} handleButtonClicked={handleButtonClicked} />
         </div>
       ))}
     </div>
